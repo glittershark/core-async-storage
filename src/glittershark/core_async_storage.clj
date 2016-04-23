@@ -15,7 +15,7 @@
 
   [fname wrapped-fn & {:keys [transducer transform-args]
                        :or   {transducer     nil
-                              transform-args 'cljs.core/identity}}]
+                              transform-args 'identity}}]
 
   ;; Evaluate in case the function expressions have side effects
   `(let [transducer# ~transducer
