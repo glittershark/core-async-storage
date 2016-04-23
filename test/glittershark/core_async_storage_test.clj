@@ -15,7 +15,7 @@
   (<!!
     (go
       (testing "without any extra options"
-        (is (= [2] (<! (test-wrapped-fn 1)))
+        (is (= [2] (<! (test-basic-wrapped-fn 1)))
             "Calls the function with a callback, and returns the arguments to
              the callback in a core.async channel"))
 
