@@ -6,6 +6,10 @@ A Clojurescript wrapper around react-native's [AsyncStorage][] using
 [AsyncStorage]: https://facebook.github.io/react-native/docs/asyncstorage.html#content
 [core.async]: https://github.com/clojure/core.async
 
+## Installation
+
+[![Clojars Project](https://img.shields.io/clojars/v/core-async-storage.svg)](https://clojars.org/core-async-storage)
+
 ## Usage
 
 In general, all exposed functions are `kebab-case` versions of AsyncStorage's
