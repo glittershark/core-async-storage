@@ -1,4 +1,4 @@
-# Core.Async Storage
+# Core.Async Storage [![Build Status](https://travis-ci.org/glittershark/core-async-storage.svg?branch=master)](https://travis-ci.org/glittershark/core-async-storage)
 
 A Clojurescript wrapper around react-native's [AsyncStorage][] using
 [core.async][]
