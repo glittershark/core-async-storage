@@ -1,2 +1,5 @@
 language: clojure
 sudo: false
+script:
+  - lein test
+  - lein doo phantom once
