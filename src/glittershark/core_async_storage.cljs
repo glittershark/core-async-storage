@@ -9,29 +9,34 @@
    serialized to and from EDN before being stored"
   {:author "Griffin Smith"}
 
-  (:require [cljs.core.async :refer [chan go <! put!]]
-            [clojure.edn :as edn])
-  (:require-macros [glittershark.core-async-storage :refer [defcbfns]]))
+  (:require [cljs.core.async :refer [promise-chan <! put!]]
+            [cljs.reader :as reader])
+  (:require-macros [glittershark.core-async-storage :refer [defcbfn]]))
 
-(def async-storage (aget (js/require "react-native") "AsyncStorage"))
+(def ^:private async-storage
+  (if (exists? js/require)
+    (aget (js/require "react-native") "AsyncStorage")
+    (js-obj)))
+
+(defn- map-first ([f] (comp vector f first))
+                 ([f v] ((map-first f) v)))
 
 (defcbfn
   ^{:doc "Fetches `key' and returns [error result] in a core.async channel, or
           [nil result] if no error"
     :arglists '([key])
     :added "1.0.0"}
-  get-item
-  (fn get-item [k cb]
-    ((aget async-storage "getItem") (pr-str k) cb)))
+  get-item (aget async-storage "getItem")
+  :transducer (map (map-first reader/read-string))
+  :transform-args (map-first pr-str))
 
 (defcbfn
   ^{:doc "Sets `value' for `key' and returns [error] in a core.async channel
           upon completion, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
-  set-item
-  (fn set-item [k v cb]
-    ((aget async-storage "setItem") (pr-str k) (pr-str v) cb)))
+  set-item (aget async-storage "setItem")
+  :transform-args #(map pr-str %))
 
 (defcbfn
   ^{:doc "Removes `key' from the storage and returns [error] in a core.async
