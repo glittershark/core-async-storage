@@ -17,15 +17,21 @@
 (deftest get-item-test
   (async done
     (go
-      (let [args (mock-storage-fn "getItem" #(% nil ":foobar"))]
-        (is (= [nil :foobar] (<! (get-item :test)))
-                "reads return values of AsyncStorage.getItem as EDN")
+      (testing "when the key exists in storage"
+        (let [args (mock-storage-fn "getItem" #(% nil ":foobar"))]
+          (is (= [nil :foobar] (<! (get-item :test)))
+              "reads return values of AsyncStorage.getItem as EDN")
 
-        (is (= [[":test"]] @args)
-            "converts the passed key to EDN before passing it to
-             AsyncStorage.getItem")
+          (is (= [[":test"]] @args)
+              "converts the passed key to EDN before passing it to
+               AsyncStorage.getItem"))
 
-        (done)))))
+        (testing "when the key doesn't exist in storage"
+          (let [args (mock-storage-fn "getItem" #(% nil nil))]
+            (is (= [nil nil] (<! (get-item :test)))
+                "returns nil for both error and value"))))
+
+      (done))))
 
 (deftest set-item-test
   (async done

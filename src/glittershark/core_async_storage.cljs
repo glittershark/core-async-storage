@@ -25,13 +25,15 @@
   ([f] (fn [coll] (vec (concat (butlast coll) [(f (last coll))]))))
   ([f v] ((map-last f) v)))
 
+(defn- ?read-string [v] (if v (reader/read-string v) v))
+
 (defcbfn
   ^{:doc "Fetches `key' and returns [error result] in a core.async channel, or
           [nil result] if no error"
     :arglists '([key])
     :added "1.0.0"}
   get-item (aget async-storage "getItem")
-  :transducer (map (map-last reader/read-string))
+  :transducer (map (map-last ?read-string))
   :transform-args (map-first pr-str))
 
 (defcbfn
