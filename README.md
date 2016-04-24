@@ -24,8 +24,8 @@ read all return values as Clojure data structures
  (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (go
-  (<! (set-item :foo {:bar "baz"})) ;; => [], or [error]
-  (println (<! (get-item :foo))))   ;; => {:bar "baz"}
+  (<! (set-item :foo {:bar "baz"})) ;; => [nil], or [error]
+  (println (<! (get-item :foo))))   ;; => [nil {:bar "baz"}], or [error nil]
 ```
 
 Result channels use core.async's [promise-chan][], so you can read from them as
@@ -34,8 +34,8 @@ often as you like and they'll always yield the same value
 ```clojure
 (go
   (let [result (get-item :foo)]
-    (println (<! result))   ;; => {:bar "baz"}
-    (println (<! result)))) ;; => {:bar "baz"}
+    (println (<! result))   ;; => [nil {:bar "baz"}]
+    (println (<! result)))) ;; => [nil {:bar "baz"}]
 ```
 
 [promise-chan]: https://clojure.github.io/core.async/#clojure.core.async/promise-chan
