@@ -20,7 +20,7 @@
   ;; Evaluate in case the function expressions have side effects
   `(let [transducer# ~transducer
          transform-args# ~transform-args]
-     (defn ~fname [& args#]
+     (defn ~fname ~(or (meta fname) {}) [& args#]
        (let
          [result-chan# (~'promise-chan transducer#)
           callback# (fn [& result#]

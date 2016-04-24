@@ -5,6 +5,7 @@
 
 (defn test-cb-fn [x cb] (cb (inc x)))
 
+(defcbfn ^{:arglists '([x])} test-meta-fn test-cb-fn)
 (defcbfn test-basic-wrapped-fn test-cb-fn)
 (defcbfn test-xf-wrapped-fn test-cb-fn
   :transducer (map (comp vector inc first)))
@@ -26,4 +27,7 @@
       (testing "with a :transform-args option"
         (is (= [5] (<! (test-arg-transform-wrapped-fn 2)))
             "Applies the :transform-args function to the arguments before
-             calling the wrapped function")))))
+             calling the wrapped function"))))
+
+  (is (= '([x]) (-> #'test-meta-fn meta :arglists))
+      "Preserves the :arglists meta of the name var"))
