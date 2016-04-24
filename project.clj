@@ -8,7 +8,9 @@
                  [org.clojure/clojurescript "1.8.40"]
                  [org.clojure/core.async "0.2.374"]]
   :plugins [[lein-cljsbuild "1.1.3"]
-            [lein-doo "0.1.6"]]
+            [lein-doo "0.1.6"]
+            [lein-codox "0.9.4"]]
+  :codox {:language :clojurescript}
   :resource-paths ["resources" "target/resources"]
   :cljsbuild {:builds
               {:test

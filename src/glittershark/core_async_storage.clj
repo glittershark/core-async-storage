@@ -1,6 +1,6 @@
 (ns glittershark.core-async-storage)
 
-(defmacro defcbfn
+(defmacro ^:no-doc defcbfn
   "Define `fname' as a wrapper to a function `wrapped-fn' which takes a callback
    as its last argument that, instead of taking a callback, returns the result
    wrapped inside a core.async channel
