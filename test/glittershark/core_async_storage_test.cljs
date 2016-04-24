@@ -17,8 +17,8 @@
 (deftest get-item-test
   (async done
     (go
-      (let [args (mock-storage-fn "getItem" #(% ":foobar"))]
-        (is (= [:foobar] (<! (get-item :test)))
+      (let [args (mock-storage-fn "getItem" #(% nil ":foobar"))]
+        (is (= [nil :foobar] (<! (get-item :test)))
                 "reads return values of AsyncStorage.getItem as EDN")
 
         (is (= [[":test"]] @args)
