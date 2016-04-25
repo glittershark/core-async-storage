@@ -49,9 +49,8 @@
           channel, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
-  remove-item
-  (fn remove-item [k cb]
-    ((aget async-storage "removeItem") (pr-str k) cb)))
+  remove-item (aget async-storage "removeItem")
+  :transform-args (map-first pr-str))
 
 (defcbfn
   ^{:doc "Erases *all* AsyncStorage for all clients, libraries, etc. You
