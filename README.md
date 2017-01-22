@@ -49,7 +49,7 @@ often as you like and they'll always yield the same value
 - [x] AsyncStorage.clear
 - [ ] AsyncStorage.getAllKeys
 - [ ] AsyncStorage.flushGetRequests
-- [ ] AsyncStorage.multiGet
+- [x] AsyncStorage.multiGet
 - [ ] AsyncStorage.multiSet
 - [ ] AsyncStorage.multiRemove
 - [ ] AsyncStorage.multiMerge

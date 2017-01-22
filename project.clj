@@ -1,4 +1,4 @@
-(defproject core-async-storage "0.1.1"
+(defproject core-async-storage "0.2.0"
   :description "Clojurescript wrapper for react-native's AsyncStorage using
                 core.async"
   :url "https://github.com/glittershark/core-async-storage"
