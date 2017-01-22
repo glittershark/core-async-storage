@@ -41,13 +41,14 @@
   :transform-args (map-first pr-str))
 
 (defcbfn
-  ^{:doc "Fetches all `keys` and returns [errors results], where each item in
-          errors and results correspond to the element at the same index in key,
-          in a core async channel, or [nil results] if no error"
+  ^{:doc "Fetches all `keys` and returns [errors? results] in a core.async
+          channel, where `results` is a map from requested keys to their values
+          in storage"
     :arglists '([keys])
     :added "1.1.0"}
   multi-get (method "multiGet")
-  :transducer (map (map-last #(map ?read-string %)))
+  :transducer (map (map-last
+                     #(->> % (map (partial mapv ?read-string)) (into {}))))
   :transform-args (map-first #(->> % (map pr-str) (apply array))))
 
 (defcbfn

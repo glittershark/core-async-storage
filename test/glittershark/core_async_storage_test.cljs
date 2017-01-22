@@ -41,8 +41,11 @@
   (async done
     (go
       (testing "when the keys all exist in storage"
-        (let [args (mock-storage-fn "multiGet" #(% nil #js [":foo" ":bar"]))]
-          (is (= [nil [:foo :bar]] (<! (multi-get [:test1 :test2])))
+        (let [args (mock-storage-fn "multiGet"
+                                    #(% nil #js[#js[":test1" ":foo"]
+                                                #js[":test2" ":bar"]]))]
+          (is (= [nil {:test1 :foo, :test2 :bar}]
+                 (<! (multi-get [:test1 :test2])))
               "reads return values of AsyncStorage.multiGet as EDN")
 
           (is (= [[[":test1" ":test2"]]] (js->clj @args))
