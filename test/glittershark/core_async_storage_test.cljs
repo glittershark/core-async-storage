@@ -3,8 +3,12 @@
             [cljs.core.async :refer [<!]]
             [glittershark.core-async-storage
              :refer [async-storage
-                     get-item set-item remove-item clear]])
+                     get-item multi-get set-item remove-item clear]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
+
+(defn js-array-equals? [a1 a2]
+  (and (js/Array.isArray a1)
+       (js/Array.isArray a2)))
 
 (defn mock-storage-fn [fname mock-fn]
   (let [call-args (atom [])
@@ -30,6 +34,26 @@
           (let [args (mock-storage-fn "getItem" #(% nil nil))]
             (is (= [nil nil] (<! (get-item :test)))
                 "returns nil for both error and value"))))
+
+      (done))))
+
+(deftest multi-get-test
+  (async done
+    (go
+      (testing "when the keys all exist in storage"
+        (let [args (mock-storage-fn "multiGet"
+                                    #(% nil #js[#js[":test1" ":foo"]
+                                                #js[":test2" ":bar"]]))]
+          (is (= [nil {:test1 :foo, :test2 :bar}]
+                 (<! (multi-get [:test1 :test2])))
+              "reads return values of AsyncStorage.multiGet as EDN")
+
+          (is (= [[[":test1" ":test2"]]] (js->clj @args))
+              "Converts all of the passed keys to EDN before passing them to
+               AsyncStorage.multiGet")
+
+          (is (js/Array.isArray (-> @args first first))
+              "Converts the list of keys to a JS array")))
 
       (done))))
 

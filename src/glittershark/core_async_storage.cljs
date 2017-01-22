@@ -27,21 +27,36 @@
 
 (defn- ?read-string [v] (if v (reader/read-string v) v))
 
+(defn- method [mname] (-> async-storage
+                          (aget mname)
+                          (.bind async-storage)))
+
 (defcbfn
   ^{:doc "Fetches `key' and returns [error result] in a core.async channel, or
           [nil result] if no error"
     :arglists '([key])
     :added "1.0.0"}
-  get-item (aget async-storage "getItem")
+  get-item (method "getItem")
   :transducer (map (map-last ?read-string))
   :transform-args (map-first pr-str))
+
+(defcbfn
+  ^{:doc "Fetches all `keys` and returns [errors? results] in a core.async
+          channel, where `results` is a map from requested keys to their values
+          in storage"
+    :arglists '([keys])
+    :added "1.1.0"}
+  multi-get (method "multiGet")
+  :transducer (map (map-last
+                     #(->> % (map (partial mapv ?read-string)) (into {}))))
+  :transform-args (map-first #(->> % (map pr-str) (apply array))))
 
 (defcbfn
   ^{:doc "Sets `value' for `key' and returns [error] in a core.async channel
           upon completion, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
-  set-item (aget async-storage "setItem")
+  set-item (method "setItem")
   :transform-args #(map pr-str %))
 
 (defcbfn
@@ -49,7 +64,7 @@
           channel, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
-  remove-item (aget async-storage "removeItem")
+  remove-item (method "removeItem")
   :transform-args (map-first pr-str))
 
 (defcbfn
@@ -59,4 +74,4 @@
           Returns [error] in a core.async channel, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
-  clear (aget async-storage "clear"))
+  clear (method "clear"))
