@@ -56,6 +56,6 @@ often as you like and they'll always yield the same value
 
 ## License
 
-Copyright © 2016 Griffin Smith
+Copyright © 2017 Griffin Smith
 
 Distributed under the MIT License.
