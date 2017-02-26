@@ -26,6 +26,13 @@ read all return values as Clojure data structures
 (go
   (<! (set-item :foo {:bar "baz"})) ;; => [nil], or [error]
   (println (<! (get-item :foo))))   ;; => [nil {:bar "baz"}], or [error nil]
+
+(let [a-map {:a "foo" :b "bar"}
+      a-vec [[:a "foo"][:b "bar"]]]
+  (go
+    ;; multi-set can accept a map or a collection of vectors
+    (println (<! (multi-set a-map)))
+    (println (<! (multi-set a-vec))))
 ```
 
 Result channels use core.async's [promise-chan][], so you can read from them as
@@ -50,7 +57,7 @@ often as you like and they'll always yield the same value
 - [ ] AsyncStorage.getAllKeys
 - [ ] AsyncStorage.flushGetRequests
 - [x] AsyncStorage.multiGet
-- [ ] AsyncStorage.multiSet
+- [x] AsyncStorage.multiSet
 - [ ] AsyncStorage.multiRemove
 - [ ] AsyncStorage.multiMerge
 

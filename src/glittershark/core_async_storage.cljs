@@ -25,6 +25,11 @@
   ([f] (fn [coll] (vec (concat (butlast coll) [(f (last coll))]))))
   ([f v] ((map-last f) v)))
 
+(defn- args->array [c]
+  (->> (map #(apply array %) c)
+       (apply array)
+       (array)))
+
 (defn- ?read-string [v] (if v (reader/read-string v) v))
 
 (defn- method [mname] (-> async-storage
@@ -58,6 +63,14 @@
     :added "1.0.0"}
   set-item (method "setItem")
   :transform-args #(map pr-str %))
+
+(defcbfn
+  ^{:doc "Sets a `value' for each `key' in a collection and returns [error] in
+         a core.async channel upon completion, or [] if no error"
+    :arglists '([[key value]])
+    :added "1.2.0"}
+  multi-set (method "multiSet")
+  :transform-args (fn [c] (args->array (map #(map pr-str %) (first c)))))
 
 (defcbfn
   ^{:doc "Removes `key' from the storage and returns [error] in a core.async
