@@ -3,7 +3,7 @@
             [cljs.core.async :refer [<!]]
             [glittershark.core-async-storage
              :refer [async-storage
-                     get-item multi-get set-item multi-set remove-item clear]])
+                     get-item multi-get set-item multi-set remove-item multi-remove clear]])
   (:require-macros [cljs.core.async.macros :refer [go]]))
 
 (defn js-array-equals? [a1 a2]
@@ -94,6 +94,19 @@
             "converts the passed key to EDN before passing it to
              AsyncStorage.removeItem")
 
+        (done)))))
+
+(deftest multi-remove-test
+  (async done
+    (go
+      (let [args (mock-storage-fn "multiRemove" #(% nil))]
+        (is (= [nil] (<! (multi-remove [:test1 :test2])))
+            "returns potential errors in a core.async channel")
+        
+        (is (= [[[":test1" ":test2"]]] (js->clj @args))
+            "converts the passed key to EDN before passing it to
+            AsyncStorage.multiRemove")
+        
         (done)))))
 
 (deftest clear-test

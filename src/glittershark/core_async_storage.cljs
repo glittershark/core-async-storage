@@ -81,6 +81,14 @@
   :transform-args (map-first pr-str))
 
 (defcbfn
+  ^{:doc "Removes each `key' in a collection from the storage and returns
+         [error] in a core.async channel, or [] if no error"
+    :arglists '([keys])
+    :added "1.2.0"}
+  multi-remove (method "multiRemove")
+  :transform-args (map-first #(->> % (map pr-str) (apply array))))
+
+(defcbfn
   ^{:doc "Erases *all* AsyncStorage for all clients, libraries, etc. You
           probably don't want to call this - use removeItem or multiRemove to
           clear only your own keys instead.
