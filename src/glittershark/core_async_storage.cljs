@@ -38,7 +38,7 @@
 
 (defcbfn
   ^{:doc "Fetches `key' and returns [error result] in a core.async channel, or
-          [nil result] if no error"
+  [nil result] if no error"
     :arglists '([key])
     :added "1.0.0"}
   get-item (method "getItem")
@@ -47,8 +47,8 @@
 
 (defcbfn
   ^{:doc "Fetches all `keys` and returns [errors? results] in a core.async
-          channel, where `results` is a map from requested keys to their values
-          in storage"
+  channel, where `results` is a map from requested keys to their values
+  in storage"
     :arglists '([keys])
     :added "1.1.0"}
   multi-get (method "multiGet")
@@ -58,7 +58,7 @@
 
 (defcbfn
   ^{:doc "Sets `value' for `key' and returns [error] in a core.async channel
-          upon completion, or [] if no error"
+  upon completion, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
   set-item (method "setItem")
@@ -66,7 +66,7 @@
 
 (defcbfn
   ^{:doc "Sets a `value' for each `key' in a collection and returns [error] in
-         a core.async channel upon completion, or [] if no error"
+  a core.async channel upon completion, or [] if no error"
     :arglists '([[key value]])
     :added "1.2.0"}
   multi-set (method "multiSet")
@@ -74,7 +74,7 @@
 
 (defcbfn
   ^{:doc "Removes `key' from the storage and returns [error] in a core.async
-          channel, or [] if no error"
+  channel, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
   remove-item (method "removeItem")
@@ -82,7 +82,7 @@
 
 (defcbfn
   ^{:doc "Removes each `key' in a collection from the storage and returns
-         [error] in a core.async channel, or [] if no error"
+  [error] in a core.async channel, or [] if no error"
     :arglists '([keys])
     :added "1.2.0"}
   multi-remove (method "multiRemove")
@@ -90,9 +90,9 @@
 
 (defcbfn
   ^{:doc "Erases *all* AsyncStorage for all clients, libraries, etc. You
-          probably don't want to call this - use removeItem or multiRemove to
-          clear only your own keys instead.
-          Returns [error] in a core.async channel, or [] if no error"
+  probably don't want to call this - use removeItem or multiRemove to
+  clear only your own keys instead.
+  Returns [error] in a core.async channel, or [] if no error"
     :arglists '([key value])
     :added "1.0.0"}
   clear (method "clear"))
