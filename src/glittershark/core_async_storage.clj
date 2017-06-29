@@ -20,14 +20,15 @@
   ;; Evaluate in case the function expressions have side effects
   `(let [transducer# ~transducer
          transform-args# ~transform-args]
-     (defn ~fname ~(or (meta fname) {}) [& args#]
-       (let
-         [result-chan# (~'promise-chan transducer#)
-          callback# (fn [& result#]
-                      (~'put! result-chan# (vec result#)))
-          wrap-args# (-> args#
+     (def ~fname
+       (fn [& args#]
+         (let
+           [result-chan# (~'promise-chan transducer#)
+            callback# (fn [& result#]
+                        (~'put! result-chan# (vec result#)))
+            wrap-args# (-> args#
                          transform-args#
                          vec
                          (conj callback#))]
-         (apply ~wrapped-fn wrap-args#)
-         result-chan#))))
+           (apply ~wrapped-fn wrap-args#)
+           result-chan#)))))
