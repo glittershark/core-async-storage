@@ -10,12 +10,13 @@
   {:author "Griffin Smith"}
 
   (:require [cljs.core.async :refer [promise-chan <! put!]]
-            [cljs.reader :as reader])
+            [cljs.reader :as reader]
+            [goog.object])
   (:require-macros [glittershark.core-async-storage :refer [defcbfn]]))
 
 (def ^:private async-storage
   (if (exists? js/require)
-    (aget (js/require "react-native") "AsyncStorage")
+    (goog.object/get (js/require "react-native") "AsyncStorage")
     (js-obj)))
 
 (defn- map-first ([f] (comp vector f first))
@@ -33,7 +34,7 @@
 (defn- ?read-string [v] (if v (reader/read-string v) v))
 
 (defn- method [mname] (-> async-storage
-                          (aget mname)
+                          (goog.object/get mname)
                           (.bind async-storage)))
 
 (defcbfn
