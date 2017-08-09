@@ -28,12 +28,16 @@
 
           (is (= [[":test"]] @args)
               "converts the passed key to EDN before passing it to
-               AsyncStorage.getItem"))
+               AsyncStorage.getItem")))
 
-        (testing "when the key doesn't exist in storage"
-          (let [args (mock-storage-fn "getItem" #(% nil nil))]
-            (is (= [nil nil] (<! (get-item :test)))
-                "returns nil for both error and value"))))
+      (testing "when the key doesn't exist in storage"
+        (let [args (mock-storage-fn "getItem" #(% nil nil))]
+          (is (= [nil nil] (<! (get-item :test)))
+              "returns nil for both error and value")))
+
+      (testing "decodes namespaced maps correctly"
+        (let [args (mock-storage-fn "getItem" #(% nil "#:foo.bar{:baz 1}"))]
+          (is (= [nil {:foo.bar/baz 1}] (<! (get-item :test))))))
 
       (done))))
 
