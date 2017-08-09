@@ -10,7 +10,7 @@
   {:author "Griffin Smith"}
 
   (:require [cljs.core.async :refer [promise-chan <! put!]]
-            [cljs.reader :as reader]
+            [cljs.tools.reader :as reader]
             [goog.object])
   (:require-macros [glittershark.core-async-storage :refer [defcbfn]]))
 
